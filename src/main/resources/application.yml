@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: api-testing-framework
+  profiles:
+    active: ${test.env:dev}
+
+api:
+  base-url: http://localhost:8080
+  default-timeout: 5000
+
+logging:
+  level:
+    root: INFO
+    com.example.apitesting: DEBUG
