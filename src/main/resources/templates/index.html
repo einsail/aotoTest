@@ -2,44 +2,204 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>API Testing Framework</title>
+    <title>API Testing Workbench</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 2rem; background: #f6f8fb; }
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --primary: #2563eb;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --danger: #dc2626;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: "Inter", "Helvetica", "Arial", sans-serif; margin: 0; padding: 2rem; background: var(--bg); color: #0f172a; }
         header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-        .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1rem; }
-        .badge { background: #2563eb; color: white; padding: 0.35rem 0.7rem; border-radius: 12px; font-size: 0.9rem; }
-        ul { padding-left: 1.2rem; }
-        code { background: #eef2ff; padding: 0.2rem 0.4rem; border-radius: 4px; }
+        header h1 { margin: 0; }
+        .badge { background: var(--primary); color: white; padding: 0.4rem 0.8rem; border-radius: 12px; font-weight: 600; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04); }
+        .stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+        input, select, textarea { width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border); font-size: 1rem; }
+        textarea { resize: vertical; min-height: 72px; }
+        button { background: var(--primary); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 10px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 15px rgba(37, 99, 235, 0.15); transition: transform 0.1s ease, box-shadow 0.1s ease; }
+        button:hover { transform: translateY(-1px); box-shadow: 0 12px 18px rgba(37, 99, 235, 0.25); }
+        button.secondary { background: #0ea5e9; box-shadow: 0 10px 15px rgba(14, 165, 233, 0.2); }
+        .muted { color: var(--muted); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #f1f5f9; font-size: 0.95rem; }
+        .pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.7rem; border-radius: 999px; font-weight: 600; }
+        .pill.success { background: #dcfce7; color: var(--success); }
+        .pill.danger { background: #fee2e2; color: var(--danger); }
+        .pill.neutral { background: #e2e8f0; color: #0f172a; }
+        .log { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; font-family: "SFMono-Regular", Consolas, monospace; white-space: pre-wrap; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; }
+        .section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
     </style>
 </head>
 <body>
 <header>
-    <h1>API Testing Framework</h1>
-    <span class="badge" th:text="${baseUrl}">http://localhost:8080</span>
+    <div>
+        <h1>API Testing Workbench</h1>
+        <p class="muted">通过 UI 添加测试用例并触发自动化执行</p>
+    </div>
+    <div>
+        <div class="badge" th:text="${baseUrl}">http://localhost:8080</div>
+        <p class="muted" style="margin-top: 0.25rem; text-align: right;">Timeout: <span th:text="${timeout}">3000</span> ms</p>
+    </div>
 </header>
+
 <div class="card">
-    <h2>Environment</h2>
-    <p>Base URL: <code th:text="${baseUrl}">http://localhost:8080</code></p>
-    <p>Default timeout: <span th:text="${timeout}">3000</span> ms</p>
-    <p>Active profile is determined by the <code>test.env</code> property.</p>
+    <div class="section-heading">
+        <div>
+            <h2 style="margin:0;">创建新的测试用例</h2>
+            <p class="muted" style="margin:0.35rem 0 0;">填写接口信息后点击“添加用例”，即可在下方列表中管理和执行。</p>
+        </div>
+        <button id="addButton">添加用例</button>
+    </div>
+    <div class="form-grid">
+        <div>
+            <label for="name">用例名称</label>
+            <input id="name" placeholder="如：健康检查" />
+        </div>
+        <div>
+            <label for="path">接口路径</label>
+            <input id="path" placeholder="/api/health" />
+        </div>
+        <div>
+            <label for="method">请求方法</label>
+            <select id="method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>DELETE</option>
+            </select>
+        </div>
+        <div>
+            <label for="expectedStatus">期望状态码</label>
+            <input id="expectedStatus" type="number" value="200" />
+        </div>
+    </div>
+    <div style="margin-top:0.75rem;">
+        <label for="description">描述</label>
+        <textarea id="description" placeholder="说明要验证的场景"></textarea>
+    </div>
 </div>
+
 <div class="card">
-    <h2>Included Layers</h2>
-    <ul>
-        <li><strong>config</strong> - typed configuration & environment resolution</li>
-        <li><strong>client</strong> - reusable RestAssured clients</li>
-        <li><strong>model</strong> - DTOs for API payloads</li>
-        <li><strong>utils</strong> - specs, logging, hooks</li>
-        <li><strong>test</strong> - TestNG suites powered by Spring context</li>
-    </ul>
+    <div class="section-heading">
+        <div>
+            <h2 style="margin:0;">用例列表</h2>
+            <p class="muted" style="margin:0.35rem 0 0;">查看最近执行结果，或直接启动自动化。</p>
+        </div>
+        <button class="secondary" id="runButton">运行全部用例</button>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>接口</th>
+                <th>期望</th>
+                <th>最近结果</th>
+            </tr>
+            </thead>
+            <tbody id="casesBody">
+            <tr><td colspan="5" class="muted">暂无数据</td></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
 <div class="card">
-    <h2>Sample Endpoints</h2>
-    <ul>
-        <li><code>/api/health</code> - health check</li>
-        <li><code>/api/users</code> - demo user list</li>
-    </ul>
-    <p>Use <code>mvn test -Dtest.env=dev</code> to exercise the TestNG suite with RestAssured.</p>
+    <div class="section-heading">
+        <h2 style="margin:0;">执行日志</h2>
+        <p class="muted" style="margin:0;">自动化运行结果会实时展示，便于排查</p>
+    </div>
+    <div id="log" class="log">等待执行...</div>
 </div>
+
+<script>
+    const casesBody = document.getElementById('casesBody');
+    const logEl = document.getElementById('log');
+
+    async function loadCases() {
+        const response = await fetch('/api/testcases');
+        const data = await response.json();
+        renderTable(data);
+    }
+
+    function renderTable(testCases) {
+        casesBody.innerHTML = '';
+        if (!testCases.length) {
+            casesBody.innerHTML = '<tr><td colspan="5" class="muted">暂无数据</td></tr>';
+            return;
+        }
+        testCases.forEach(tc => {
+            const row = document.createElement('tr');
+            const statusPill = tc.lastResult ?
+                `<span class="pill ${tc.lastResult.passed ? 'success' : 'danger'}">${tc.lastResult.passed ? '通过' : '失败'}${tc.lastResult.actualStatus ? ' (' + tc.lastResult.actualStatus + ')' : ''}</span>` :
+                '<span class="pill neutral">未执行</span>';
+            row.innerHTML = `
+                <td>${tc.id}</td>
+                <td>
+                    <div style="font-weight:600;">${tc.name}</div>
+                    <div class="muted" style="font-size:0.9rem;">${tc.description || ''}</div>
+                </td>
+                <td><code>${tc.method}</code> ${tc.path}</td>
+                <td>${tc.expectedStatus}</td>
+                <td>${statusPill}</td>
+            `;
+            casesBody.appendChild(row);
+        });
+    }
+
+    async function addCase() {
+        const payload = {
+            name: document.getElementById('name').value.trim(),
+            path: document.getElementById('path').value.trim(),
+            method: document.getElementById('method').value,
+            expectedStatus: Number(document.getElementById('expectedStatus').value),
+            description: document.getElementById('description').value.trim()
+        };
+        if (!payload.name || !payload.path) {
+            alert('请填写用例名称和接口路径');
+            return;
+        }
+        const response = await fetch('/api/testcases', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+            alert('创建用例失败');
+            return;
+        }
+        document.getElementById('name').value = '';
+        document.getElementById('path').value = '';
+        document.getElementById('description').value = '';
+        await loadCases();
+    }
+
+    async function runAutomation() {
+        logEl.textContent = '自动化执行中...';
+        const response = await fetch('/api/testcases/run', { method: 'POST' });
+        const results = await response.json();
+        const lines = results.map(r => {
+            const status = r.passed ? '✅ PASS' : '❌ FAIL';
+            const http = r.actualStatus ? `HTTP ${r.actualStatus}` : '无响应';
+            return `${status} | ${r.testCaseName} | 期望 ${r.expectedStatus}, 实际 ${http}\n详情: ${r.details || '无'}`;
+        });
+        logEl.textContent = lines.join('\n\n');
+        await loadCases();
+    }
+
+    document.getElementById('addButton').addEventListener('click', addCase);
+    document.getElementById('runButton').addEventListener('click', runAutomation);
+    loadCases();
+</script>
 </body>
 </html>
