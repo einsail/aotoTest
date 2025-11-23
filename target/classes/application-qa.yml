@@ -1,0 +1,3 @@
+api:
+  base-url: https://api.qa.example.com
+  default-timeout: 8000

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>API Testing Framework</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 2rem; background: #f6f8fb; }
+        header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+        .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1rem; }
+        .badge { background: #2563eb; color: white; padding: 0.35rem 0.7rem; border-radius: 12px; font-size: 0.9rem; }
+        ul { padding-left: 1.2rem; }
+        code { background: #eef2ff; padding: 0.2rem 0.4rem; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>API Testing Framework</h1>
+    <span class="badge" th:text="${baseUrl}">http://localhost:8080</span>
+</header>
+<div class="card">
+    <h2>Environment</h2>
+    <p>Base URL: <code th:text="${baseUrl}">http://localhost:8080</code></p>
+    <p>Default timeout: <span th:text="${timeout}">3000</span> ms</p>
+    <p>Active profile is determined by the <code>test.env</code> property.</p>
+</div>
+<div class="card">
+    <h2>Included Layers</h2>
+    <ul>
+        <li><strong>config</strong> - typed configuration & environment resolution</li>
+        <li><strong>client</strong> - reusable RestAssured clients</li>
+        <li><strong>model</strong> - DTOs for API payloads</li>
+        <li><strong>utils</strong> - specs, logging, hooks</li>
+        <li><strong>test</strong> - TestNG suites powered by Spring context</li>
+    </ul>
+</div>
+<div class="card">
+    <h2>Sample Endpoints</h2>
+    <ul>
+        <li><code>/api/health</code> - health check</li>
+        <li><code>/api/users</code> - demo user list</li>
+    </ul>
+    <p>Use <code>mvn test -Dtest.env=dev</code> to exercise the TestNG suite with RestAssured.</p>
+</div>
+</body>
+</html>
