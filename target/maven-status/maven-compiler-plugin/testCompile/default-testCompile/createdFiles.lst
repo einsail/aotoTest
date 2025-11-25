@@ -1,0 +1,4 @@
+com/example/apitesting/test/HealthApiTest.class
+com/example/apitesting/test/UserApiTest.class
+com/example/apitesting/test/BaseApiTest.class
+com/example/apitesting/test/TestEnvironmentResolver.class

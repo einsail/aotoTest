@@ -1,0 +1,9 @@
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/Application.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/client/UserClient.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/config/EnvironmentProperties.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/model/ApiUser.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/utils/LoggingTestListener.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/utils/RequestSpecFactory.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/utils/RestAssuredConfigFactory.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/web/ApiController.java
+/Users/sail/Documents/code/Java/aotoTest/src/main/java/com/example/apitesting/web/ViewController.java

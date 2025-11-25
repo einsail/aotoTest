@@ -1,0 +1,10 @@
+com/example/apitesting/client/UserClient$1.class
+com/example/apitesting/web/ViewController.class
+com/example/apitesting/utils/RequestSpecFactory.class
+com/example/apitesting/config/EnvironmentProperties.class
+com/example/apitesting/model/ApiUser.class
+com/example/apitesting/Application.class
+com/example/apitesting/utils/RestAssuredConfigFactory.class
+com/example/apitesting/client/UserClient.class
+com/example/apitesting/web/ApiController.class
+com/example/apitesting/utils/LoggingTestListener.class
